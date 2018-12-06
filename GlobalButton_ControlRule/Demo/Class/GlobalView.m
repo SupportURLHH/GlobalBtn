@@ -21,7 +21,7 @@ static GlobalView *shared_;
 + (instancetype)sharedInstance {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        shared_ = [[self alloc] initWithFrame:CGRectMake(80, 200, 50, 50)];
+        shared_ = [[self alloc] initWithFrame:CGRectMake(50, 300, 50, 50)];
     });
     return shared_;
 }

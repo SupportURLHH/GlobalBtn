@@ -14,7 +14,7 @@ static char* dismissWhenTouchBackgroundKey = "dismissWhenTouchBackgroundKey";
 static char* popUpWindowKey = "popUpWindowKey";
 static char* previosKeyWindowKey = "previosKeyWindowKey";
 static char* dissmissCallbackKey = "dissmissCallbackKey";
-
+static char* dismissCompletionCallbackKey = "dismissCompletionCallbackKey";
 NSTimeInterval const kPopupModalAnimationDuration = 0.30f;
 
 static NSMutableArray *__popUpViewControllers = nil;
@@ -161,6 +161,17 @@ static NSMutableArray *__popUpViewControllers = nil;
 {
     return objc_getAssociatedObject(self, dissmissCallbackKey);
 }
+
+- (void)setDismissCompletionCallback:(DismissCompletionCallback)dismissCompletionCallback
+{
+    objc_setAssociatedObject(self, dismissCompletionCallbackKey,dismissCompletionCallback, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
+- (DismissCompletionCallback)dismissCompletionCallback
+{
+    return objc_getAssociatedObject(self, dismissCompletionCallbackKey);
+}
+
 
 #pragma mark - private methods
 
@@ -367,15 +378,22 @@ static NSMutableArray *__popUpViewControllers = nil;
         weakSelf.popUpWindow.rootViewController = nil;
         weakSelf.popUpWindow = nil;
         weakSelf.popUpViewController.popUpParentViewController = nil;
-        weakSelf.popUpViewController = nil;
+        
         UIWindow *curKeyWindow = [[UIApplication sharedApplication] keyWindow];
         if (curKeyWindow == weakSelf.previosKeyWindow) {
             [weakSelf.previosKeyWindow makeKeyWindow];
         }
         
+        if (weakSelf.popUpViewController.dismissCompletionCallback) {
+            weakSelf.popUpViewController.dismissCompletionCallback();
+        }
+        weakSelf.popUpViewController = nil;
+        
         if (completion) {
             completion();
         }
+        
+       
     }];
 }
 

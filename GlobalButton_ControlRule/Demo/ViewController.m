@@ -69,8 +69,35 @@
 - (IBAction)popUpFixedSizeVCClick:(id)sender {
     
     FixedPopUpVC *vc = [FixedPopUpVC new];
+    vc.view.backgroundColor = [UIColor redColor];
     vc.popUpViewSize = CGSizeMake(100, 100);
     vc.popUpPosition = DDPopUpPositionCenter;
+    
+    /*
+     *  对于 UIViewController+DDPopUpViewController 这种 通过 keyWindow 切换 show VC 的方式，
+     
+        self 的 viewwillappear 生命周期不会走，
+     
+        但是当前 VC 需要显示，所以再调用一次 show ,且在动画结束回调中。
+     
+    *   DDPopUpVC 动画结束后 [[UIApplication sharedApplication] keyWindow] 已切换为 self 所在window，
+     
+        [GlobalView show] 也是通过添加到 keywindow 的方式显示。
+     
+    *   DDPopUpViewController 源码也做了修改，遇到这类，可以看回调情况
+     
+    */
+    
+    // 动画结束前
+//    vc.dismissCallback = ^{
+//        [GlobalView show];
+//    };
+    
+    // 动画结束后
+    vc.dismissCompletionCallback = ^{
+        [GlobalView show];
+    };
+
     [self showPopUpViewController:vc animationType:DDPopUpAnimationTypeFade];
 }
 

@@ -88,7 +88,7 @@ static char GlobalViewKey;
 - (void)yd_viewDidDisappear:(BOOL)animated {
     
     // 实现特殊需求逻辑，或此 demo 未考虑周全的bug
-    
+  
     [self yd_viewDidDisappear:animated];
 }
 

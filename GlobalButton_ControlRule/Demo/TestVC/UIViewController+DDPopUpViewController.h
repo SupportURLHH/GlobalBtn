@@ -36,6 +36,8 @@ UIKIT_EXTERN NSTimeInterval const kPopupModalAnimationDuration;
 
 typedef void(^DismissCallback)(void);
 
+typedef void(^DismissCompletionCallback)(void);
+
 @class DDPopUpContainerViewController;
 
 @interface UIViewController (DDPopUpViewController)<UINavigationControllerDelegate>
@@ -46,7 +48,8 @@ typedef void(^DismissCallback)(void);
 @property (nonatomic,assign) DDPopUpPosition popUpPosition;     //弹出视图的位置
 @property (nonatomic,assign) BOOL dismissWhenTouchBackground;   //是否允许点击背景dismiss
 @property (nonatomic,copy) DismissCallback dismissCallback;
-
+// 增加动画结束的callback 
+@property (nonatomic,copy) DismissCompletionCallback dismissCompletionCallback;
 
 + (void)dismissCurrentShowingPopUpViewControllers;
 
