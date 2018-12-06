@@ -34,6 +34,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    // 默认是非全局显示，设置显示的白名单，可以在这些页面显示了
     [GlobalView yd_setWhitelist:@[@"ViewController",@"ViewControllerFirst",@"ViewControllerThird"]];
     
     
